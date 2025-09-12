@@ -3,7 +3,7 @@ package com.bagautdinov.http;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class MainRequestsTest {
     public static void main(String[] args) {
         HttpClient client = new HttpClient();
 
