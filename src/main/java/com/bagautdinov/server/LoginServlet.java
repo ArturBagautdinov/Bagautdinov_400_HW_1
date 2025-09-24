@@ -21,6 +21,11 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
+        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
+            resp.sendRedirect("login.html");
+            return;
+        }
+
         String storedPassword = SignUpServlet.users.get(login);
 
         if (storedPassword != null && storedPassword.equals(password)) {
