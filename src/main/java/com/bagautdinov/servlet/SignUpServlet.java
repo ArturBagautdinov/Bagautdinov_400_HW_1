@@ -1,4 +1,4 @@
-package com.bagautdinov.server;
+package com.bagautdinov.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("sign_up.html");
+        resp.sendRedirect("sign_up.ftl");
     }
 
     @Override
@@ -25,21 +25,21 @@ public class SignUpServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if (login == null || login.isEmpty()) {
-            resp.sendRedirect("sign_up.html");
+            resp.sendRedirect("sign_up.ftl");
             return;
         }
 
         if (password == null || password.isEmpty()) {
-            resp.sendRedirect("sign_up.html");
+            resp.sendRedirect("sign_up.ftl");
             return;
         }
 
         if (users.containsKey(login)) {
-            resp.sendRedirect("sign_up.html");
+            resp.sendRedirect("sign_up.ftl");
             return;
         }
 
         users.put(login, password);
-        resp.sendRedirect("login.html");
+        resp.sendRedirect("login.ftl");
     }
 }

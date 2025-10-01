@@ -1,4 +1,4 @@
-package com.bagautdinov.server;
+package com.bagautdinov.servlet;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -13,7 +13,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("login.html");
+        resp.sendRedirect("login.ftl");
     }
 
     @Override
@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-            resp.sendRedirect("login.html");
+            resp.sendRedirect("login.ftl");
             return;
         }
 
@@ -37,9 +37,9 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(24 * 60 * 60);
             resp.addCookie(cookie);
 
-            resp.sendRedirect("main.jsp");
+            resp.sendRedirect("main");
         } else {
-            resp.sendRedirect("login.html");
+            resp.sendRedirect("login.ftl");
         }
     }
 }
