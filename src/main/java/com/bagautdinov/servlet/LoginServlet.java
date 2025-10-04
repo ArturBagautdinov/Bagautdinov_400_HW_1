@@ -1,5 +1,9 @@
 package com.bagautdinov.servlet;
 
+import com.bagautdinov.entity.User;
+import com.bagautdinov.service.UserService;
+import com.bagautdinov.service.UserServiceImpl;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +14,8 @@ import java.io.IOException;
 
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
+
+    private final UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -26,14 +32,16 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        String storedPassword = SignUpServlet.users.get(login);
+        User user = userService.loginUser(login, password);
 
-        if (storedPassword != null && storedPassword.equals(password)) {
+        if (user != null) {
             HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("user", login);
+            httpSession.setAttribute("user", user.getLogin());
+            httpSession.setAttribute("userId", user.getId());
+            httpSession.setAttribute("userName", user.getName());
             httpSession.setMaxInactiveInterval(60 * 60);
 
-            Cookie cookie = new Cookie("user", login);
+            Cookie cookie = new Cookie("user", user.getLogin());
             cookie.setMaxAge(24 * 60 * 60);
             resp.addCookie(cookie);
 

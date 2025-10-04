@@ -1,18 +1,20 @@
 package com.bagautdinov.servlet;
 
+import com.bagautdinov.entity.User;
+import com.bagautdinov.service.UserService;
+import com.bagautdinov.service.UserServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet(name = "SignUp", urlPatterns = "/sign_up")
 public class SignUpServlet extends HttpServlet {
 
-    public static Map<String, String> users = new HashMap<>();
+    private final UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -21,25 +23,23 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String lastname = req.getParameter("lastname");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        if (login == null || login.isEmpty()) {
+        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
             resp.sendRedirect("sign_up.ftl");
             return;
         }
 
-        if (password == null || password.isEmpty()) {
-            resp.sendRedirect("sign_up.ftl");
-            return;
-        }
+        if (name == null) name = "";
+        if (lastname == null) lastname = "";
 
-        if (users.containsKey(login)) {
-            resp.sendRedirect("sign_up.ftl");
-            return;
-        }
+        User newUser = new User(0, name, lastname, login, password);
 
-        users.put(login, password);
+        boolean isRegistered = userService.registerUser(newUser);
+
         resp.sendRedirect("login.ftl");
     }
 }
