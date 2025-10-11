@@ -10,13 +10,14 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao = new UserDaoImpl();
+
     @Override
     public List<UserDto> getAll() {
         return userDao.getAll().stream().map(
-                u -> new UserDto(u.getName(), u.getLogin()))
-                        .toList();
-
+                        u -> new UserDto(u.getName(), u.getLogin()))
+                .toList();
     }
+
     @Override
     public boolean registerUser(User user) {
         User existingUser = userDao.getByLogin(user.getLogin());
@@ -47,5 +48,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isLoginAvailable(String login) {
+        User user = userDao.getByLogin(login);
+        return user == null;
     }
 }

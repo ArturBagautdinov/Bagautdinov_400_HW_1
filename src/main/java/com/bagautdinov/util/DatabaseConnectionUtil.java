@@ -15,7 +15,7 @@ public class DatabaseConnectionUtil {
                 connection = DriverManager.getConnection(
                         "jdbc:postgresql://localhost:5432/LessonDB",
                         "postgres",
-                        "1234"
+                        "Fhnehbr2021"
                 );
             } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
