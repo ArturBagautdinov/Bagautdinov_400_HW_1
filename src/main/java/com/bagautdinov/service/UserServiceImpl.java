@@ -13,9 +13,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userDao.getAll().stream().map(
-                        u -> new UserDto(u.getName(), u.getLogin()))
-                .toList();
+        return userDao.getAllUsersDto();
     }
 
     @Override
@@ -31,7 +29,8 @@ public class UserServiceImpl implements UserService {
                 user.getName(),
                 user.getLastname(),
                 user.getLogin(),
-                hashedPassword
+                hashedPassword,
+                user.getImage()
         );
 
         userDao.save(userWithHashedPassword);

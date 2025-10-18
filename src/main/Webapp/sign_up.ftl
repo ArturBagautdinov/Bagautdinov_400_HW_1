@@ -23,6 +23,18 @@
                 }, 500);
             });
 
+            // Предпросмотр изображения
+            $('#image-input').on('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result).show();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
             function checkLoginAvailability(login) {
                 console.log('Checking login:', login);
 
@@ -63,7 +75,7 @@
         });
     </script>
 
-    <form method="post" action="/sign_up" id="registration-form">
+    <form method="post" action="/sign_up" id="registration-form" enctype="multipart/form-data">
         Имя:
         <input type="text" name="name">
         <br>
@@ -76,6 +88,12 @@
         <br>
         Пароль:
         <input type="password" name="password" id="password-input">
+        <br>
+        Фото профиля:
+        <input type="file" name="image" id="image-input" accept="image/*">
+        <br>
+        <!-- Предпросмотр изображения -->
+        <img id="image-preview" src="#" alt="Предпросмотр" style="max-width: 200px; max-height: 200px; display: none; margin-top: 10px;">
         <br>
         <input type="submit" value="Зарегистрироваться" id="submit-btn" disabled>
     </form>

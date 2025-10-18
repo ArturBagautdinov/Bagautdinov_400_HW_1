@@ -1,5 +1,6 @@
 package com.bagautdinov.dao;
 
+import com.bagautdinov.dto.UserDto;
 import com.bagautdinov.entity.User;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public interface UserDao {
     void save(User user);
     User getById(Integer id);
     User getByLogin(String login);
+    List<UserDto> getAllUsersDto();
 
 }
