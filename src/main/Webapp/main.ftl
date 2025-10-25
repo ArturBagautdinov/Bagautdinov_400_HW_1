@@ -8,15 +8,11 @@
             <img src="${userImage}"
                  alt="Фото профиля"
                  style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #007bff;">
-        <#else>
-            <img src="uploads/default-avatar.png"
-                 alt="Фото профиля"
-                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #007bff;">
         </#if>
         <div>
-            <h3 style="margin: 0 0 10px 0;">Привет, ${username}!</h3>
-            <p style="margin: 5px 0; color: #666;">Session ID: ${sessionId}</p>
-            <p style="margin: 5px 0; color: #666;">Cookie user: ${cookieUser}</p>
+            <h3 style="margin: 0 0 10px 0;">Привет, ${username!''}!</h3>
+            <p style="margin: 5px 0; color: #666;">Session ID: ${sessionId!''}</p>
+            <p style="margin: 5px 0; color: #666;">Cookie user: ${cookieUser!''}</p>
         </div>
     </div>
 

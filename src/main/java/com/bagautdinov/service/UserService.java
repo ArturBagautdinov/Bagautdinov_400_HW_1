@@ -11,4 +11,5 @@ public interface UserService {
     boolean registerUser(User user);
     User loginUser(String login, String password);
     boolean isLoginAvailable(String login);
+    User getUserByLogin(String login);
 }

@@ -18,7 +18,7 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            resp.sendRedirect("login.ftl");
+            resp.sendRedirect("login");
             return;
         }
 
@@ -35,8 +35,15 @@ public class MainServlet extends HttpServlet {
             }
         }
 
-        User user = userService.loginUser(username, "");
-        String userImage = user != null && user.getImage() != null ? user.getImage() : "default-avatar.png";
+        User user = userService.getUserByLogin(username);
+        String userImage = "";
+
+        if (user != null && user.getImage() != null && !user.getImage().isEmpty()) {
+            userImage = user.getImage();
+            System.out.println("DEBUG: User image found: " + userImage);
+        } else {
+            System.out.println("DEBUG: No user image found");
+        }
 
         req.setAttribute("username", username);
         req.setAttribute("sessionId", sessionId);

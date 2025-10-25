@@ -118,10 +118,14 @@ public class UserDaoImpl implements UserDao {
                         fullName = resultSet.getString("login");
                     }
 
+                    String imageUrl = resultSet.getString("image");
+                    if (imageUrl != null && !imageUrl.startsWith("http") && !imageUrl.equals("default-avatar.png")) {
+                    }
+
                     users.add(new UserDto(
                             fullName,
                             resultSet.getString("login"),
-                            resultSet.getString("image")
+                            imageUrl
                     ));
                 }
             }

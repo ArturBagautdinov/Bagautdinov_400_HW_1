@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-            resp.sendRedirect("login.ftl");
+            resp.sendRedirect("login.ftl?error=empty_fields");
             return;
         }
 
@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 
             resp.sendRedirect("main");
         } else {
-            resp.sendRedirect("login.ftl");
+            resp.sendRedirect("login.ftl?error=invalid_credentials");
         }
     }
 }

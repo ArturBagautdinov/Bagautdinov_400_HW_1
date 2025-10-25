@@ -23,10 +23,17 @@
                 }, 500);
             });
 
-            // Предпросмотр изображения
             $('#image-input').on('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
+
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Файл слишком большой. Максимальный размер: 5MB');
+                        $(this).val('');
+                        $('#image-preview').hide();
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         $('#image-preview').attr('src', e.target.result).show();
@@ -36,15 +43,11 @@
             });
 
             function checkLoginAvailability(login) {
-                console.log('Checking login:', login);
-
                 $.ajax({
                     url: '/check_login',
                     type: 'GET',
                     data: { login: login },
                     success: function(response) {
-                        console.log('Raw response:', response);
-
                         try {
                             let result;
                             if (typeof response === 'string') {
@@ -52,8 +55,6 @@
                             } else {
                                 result = response;
                             }
-
-                            console.log('Parsed result:', result);
 
                             $('#login-status').text(result.message).css('color', result.available ? 'green' : 'red');
                             $('#submit-btn').prop('disabled', !result.available);
@@ -75,29 +76,47 @@
         });
     </script>
 
+    <#if RequestParameters.error??>
+        <div style="color: red; margin-bottom: 15px; padding: 10px; background: #ffe6e6; border: 1px solid red; border-radius: 5px;">
+            <#if RequestParameters.error == "empty_fields">
+                Логин и пароль обязательны для заполнения
+            <#elseif RequestParameters.error == "registration_failed">
+                Ошибка при регистрации. Попробуйте еще раз.
+            </#if>
+        </div>
+    </#if>
+
+    <#if RequestParameters.success??>
+        <div style="color: green; margin-bottom: 15px; padding: 10px; background: #e6ffe6; border: 1px solid green; border-radius: 5px;">
+            <#if RequestParameters.success == "registered">
+                Регистрация успешна! Теперь вы можете войти.
+            </#if>
+        </div>
+    </#if>
+
     <form method="post" action="/sign_up" id="registration-form" enctype="multipart/form-data">
         Имя:
-        <input type="text" name="name">
+        <input type="text" name="name" required>
         <br>
         Фамилия:
-        <input type="text" name="lastname">
+        <input type="text" name="lastname" required>
         <br>
         Логин:
-        <input type="text" name="login" id="login-input">
+        <input type="text" name="login" id="login-input" required>
         <span id="login-status" style="margin-left: 10px; font-size: 12px;"></span>
         <br>
         Пароль:
-        <input type="password" name="password" id="password-input">
+        <input type="password" name="password" id="password-input" required>
         <br>
         Фото профиля:
         <input type="file" name="image" id="image-input" accept="image/*">
+        <small style="display: block; color: #666;">Максимальный размер: 5MB</small>
         <br>
-        <!-- Предпросмотр изображения -->
         <img id="image-preview" src="#" alt="Предпросмотр" style="max-width: 200px; max-height: 200px; display: none; margin-top: 10px;">
         <br>
         <input type="submit" value="Зарегистрироваться" id="submit-btn" disabled>
     </form>
 
     <br>
-    <a href="login.ftl">Назад к входу</a>
+    <a href="login">Назад к входу</a>
 </#macro>
